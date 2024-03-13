@@ -30,7 +30,7 @@ def visualize(model: BoundedConfidence, steps: int, digits: int = 2):
             )
     pos = nx.get_node_attributes(net, "pos")
     colors = list(nx.get_node_attributes(net, "color").values())
-    labels = {node: round(node[0], 2) for node in net.nodes()}
+    labels = {node: round(node[0], digits) for node in net.nodes()}
 
     # add edges
     for step in range(steps - 1):
