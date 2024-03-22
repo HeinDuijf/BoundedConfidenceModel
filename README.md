@@ -11,7 +11,7 @@ pip install -r requirements.txt
 ```
 
 ## 2. The model `model.py`
-The class `BoundedConfidence` in the module `model.py` implements the bounded confidence model. 
+The class `BoundedConfidence` in the module `model.py` is an implementation of the bounded confidence model. 
 
 ## 3. Visualization `visualize.py`
 The method `visualize` in the module `visualize.py` can be used to visualize the run of a bounded confidence model. 
