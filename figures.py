@@ -44,7 +44,7 @@ if __name__ == "__main__":
         output_file="images/responsiveness",
     )
 
-    start = [31, 41, 81]
+    start = [30, 40, 81]
     model = BoundedConfidence(start_distribution=start, confidence_threshold=50)
     visualize(
         model=model,
