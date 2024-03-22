@@ -13,14 +13,15 @@ class BoundedConfidence:
         columns = self.agents
         results = pd.DataFrame(data=self.opinions.reshape(1, -1), columns=columns)
         for _ in range(number_of_steps):
-            new_opinions = self.update(return_opinions=True)
+            self.update()
+            new_opinions = self.opinions.copy()
             results = pd.concat(
                 [results, pd.DataFrame(new_opinions.reshape(1, -1), columns=columns)],
                 ignore_index=True,
             )
         return results
 
-    def update(self, return_opinions: bool = False):
+    def update(self):
         post_opinions = self.opinions.copy()
         for agent in self.agents:
             neighbors = (
@@ -30,5 +31,6 @@ class BoundedConfidence:
             if np.sum(neighbors) > 0:
                 post_opinions[agent] = np.mean(self.opinions[neighbors])
         self.opinions = post_opinions
-        if return_opinions:
-            return self.opinions.copy()
+
+    def reset(self):
+        self.opinions = np.array(self.start_distribution, dtype=float)

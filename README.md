@@ -18,8 +18,7 @@ The method `visualize` in the module `visualize.py` can be used to visualize the
 
 
 ## A. Licence and citation
-This repository accompanies ongoing research. In the meantime, 
-please cite as follows:
+This repository accompanies ongoing research. In the meantime, please cite as follows:
 
 - Duijf, H. (2024). An implementation and visualization of the bounded confidence model. https://github.com/HeinDuijf/OpinionDynamicsHK
 
