@@ -16,6 +16,8 @@ The class `BoundedConfidence` in the module `model.py` is an implementation of t
 ## 3. Visualization `visualize.py`
 The method `visualize` in the module `visualize.py` can be used to visualize the run of a bounded confidence model. 
 
+## 4. Figures `figures.py`
+The module produces all the images that are relevant to the paper. 
 
 ## A. Licence and citation
 This repository accompanies ongoing research. In the meantime, please cite as follows:
