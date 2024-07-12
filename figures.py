@@ -2,8 +2,8 @@ from model import BoundedConfidence
 from visualize import visualize
 
 if __name__ == "__main__":
-    start = [10, 20, 30, 32, 32, 32, 32, 32]
-    model = BoundedConfidence(start_distribution=start, confidence_threshold=11)
+    start = [20, 40, 60, 64, 64, 64, 64, 64]
+    model = BoundedConfidence(start_distribution=start, confidence_threshold=22)
     visualize(
         model=model,
         steps=6,
@@ -11,7 +11,7 @@ if __name__ == "__main__":
         output_file="images/openness_monotonicity_0",
     )
 
-    model = BoundedConfidence(start_distribution=start, confidence_threshold=12)
+    model = BoundedConfidence(start_distribution=start, confidence_threshold=24)
     visualize(
         model=model,
         steps=6,
