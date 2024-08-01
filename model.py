@@ -34,3 +34,32 @@ class BoundedConfidence:
 
     def reset(self):
         self.opinions = np.array(self.start_distribution, dtype=float)
+
+
+class LinearPooling:
+    def __init__(self, start_profile: np.array, matrix: np.array) -> None:
+        self.opinions = np.array(start_profile, dtype=float)
+        self.matrix = np.array(matrix, dtype=float)
+        self.agents = range(len(self.opinions))
+
+    def run(self) -> np.array:
+        run = True
+        while run:
+            self.update()
+            if np.max(model.opinions) - np.min(model.opinions) < 10**-6:
+                run = False
+        return self.opinions
+
+    def update(self) -> None:
+        self.opinions = np.dot(self.matrix, self.opinions)
+
+
+if __name__ == "__main__":
+    matrix = np.array([[1 / 2, 1 / 2, 0], [1 / 4, 3 / 4, 0], [1 / 3, 1 / 3, 1 / 3]])
+    profile = [120, 240, 90]
+    model = LinearPooling(profile, matrix)
+    for round in range(100):
+        print(f"Round {round}: {model.opinions}")
+        model.update()
+        if np.max(model.opinions) - np.min(model.opinions) < 10**-6:
+            break
