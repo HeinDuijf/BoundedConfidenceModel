@@ -22,6 +22,6 @@ The module produces all the images that are relevant to the paper.
 ## A. Licence and citation
 This repository accompanies ongoing research. In the meantime, please cite as follows:
 
-- Duijf, H. (2024). An implementation and visualization of the bounded confidence model. https://github.com/HeinDuijf/OpinionDynamicsHK
+- Duijf, H. (2024). An implementation and visualization of the bounded confidence model. https://github.com/HeinDuijf/BoundedConfidenceModel 
 
 Released under the [MIT licence](LICENCE.md).
