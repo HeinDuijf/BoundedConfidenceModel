@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import networkx as nx
 import numpy as np
-from matplotlib import cm
+from matplotlib import colormaps
 from matplotlib.colors import ListedColormap
 
 from model import BoundedConfidence
@@ -42,7 +42,7 @@ def visualize(
     cmap = "coolwarm"  # other options: coolwarm, Greys
     if blackwhite:
         cmap = "Greys"
-    colormap = ListedColormap(cm.get_cmap(cmap)(np.linspace(0.3, 0.7)))
+    colormap = ListedColormap(colormaps[cmap](np.linspace(0.3, 0.7)))
     color_nodes = [node[0] for node in net.nodes()]
     labels = {node: round(node[0], digits) for node in net.nodes()}
     if digits == 0:
