@@ -1,6 +1,8 @@
 import numpy as np
+import pytest
+from scipy.special import expit, logit
 
-from model import BoundedConfidence
+from model import BoundedConfidence, LogOdds
 
 global margin_of_error
 margin_of_error = 0.00001
@@ -75,3 +77,21 @@ def test_reset():
     assert set(model2.opinions) != set(model2.start_distribution)
     model2.reset()
     assert set(model2.opinions) == set(model2.start_distribution)
+
+
+def test_logodds_matches_closed_form():
+    matrix = np.array([[0.5, 0.5, 0], [0.25, 0.75, 0], [1 / 3, 1 / 3, 1 / 3]])
+    start = [0.2, 0.5, 0.8]
+    steps = 4
+    model = LogOdds(start, matrix)
+    results = model.run(number_of_steps=steps)
+
+    predicted_log_odds = np.linalg.matrix_power(matrix, steps) @ logit(np.array(start))
+    predicted = expit(predicted_log_odds)
+    assert np.allclose(results.iloc[-1].to_numpy(), predicted, atol=1e-8)
+
+
+def test_logodds_requires_row_stochastic_matrix():
+    bad_matrix = np.array([[0.5, 0.6], [0.3, 0.7]])
+    with pytest.raises(ValueError):
+        LogOdds(start_profile=[0.3, 0.6], matrix=bad_matrix)

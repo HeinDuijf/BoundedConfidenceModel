@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from scipy.special import expit, logit
 
 
 class BoundedConfidence:
@@ -52,6 +53,51 @@ class LinearPooling:
 
     def update(self) -> None:
         self.opinions = np.dot(self.matrix, self.opinions)
+
+
+class LogOdds:
+    """Log-odds (logit) social learning: agents average neighbors' log-odds
+    of belief via a row-stochastic trust matrix, then convert back to a
+    probability via the logistic function.
+
+    Opinions are clipped to (epsilon, 1 - epsilon) before taking the logit,
+    so opinions at exactly 0 or 1 become near-certain rather than acting as
+    absorbing zealots.
+
+    Like BoundedConfidence.run(), calling run() again continues from the
+    current opinions rather than resetting first; call reset() beforehand
+    for a fresh run from start_profile.
+    """
+
+    def __init__(self, start_profile: np.ndarray, matrix: np.ndarray, logit_epsilon: float = 1e-12) -> None:
+        matrix = np.array(matrix, dtype=float)
+        row_sums = matrix.sum(axis=1)
+        if not np.allclose(row_sums, 1.0):
+            raise ValueError(
+                "Rows of `matrix` must sum to 1 (row-stochastic); got row "
+                f"sums {row_sums}."
+            )
+        self.start_profile = np.array(start_profile, dtype=float)
+        self.opinions = np.array(start_profile, dtype=float)
+        self.matrix = matrix
+        self.agents = range(len(self.opinions))
+        self.logit_epsilon = logit_epsilon
+
+    def run(self, number_of_steps: int = 1) -> pd.DataFrame:
+        columns = self.agents
+        rows = [self.opinions.copy()]
+        for _ in range(number_of_steps):
+            self.update()
+            rows.append(self.opinions.copy())
+        return pd.DataFrame(data=rows, columns=columns)
+
+    def update(self) -> None:
+        clipped = np.clip(self.opinions, self.logit_epsilon, 1 - self.logit_epsilon)
+        new_log_odds = np.dot(self.matrix, logit(clipped))
+        self.opinions = expit(new_log_odds)
+
+    def reset(self) -> None:
+        self.opinions = np.array(self.start_profile, dtype=float)
 
 
 if __name__ == "__main__":
