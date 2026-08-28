@@ -1,9 +1,0 @@
-scipy
-numpy
-pandas
-matplotlib
-seaborn
-networkx
-statsmodels
-pytest
-pyvis
